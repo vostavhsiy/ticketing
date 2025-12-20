@@ -11,6 +11,21 @@
     },
     {
       "path": "./libs/auth"
+    },
+    {
+      "path": "./apps/tickets-service-e2e"
+    },
+    {
+      "path": "./apps/tickets-service"
+    },
+    {
+      "path": "./libs/events"
+    },
+    {
+      "path": "./apps/orders-service-e2e"
+    },
+    {
+      "path": "./apps/orders-service"
     }
   ]
 }

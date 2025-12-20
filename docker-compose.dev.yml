@@ -32,6 +32,38 @@ services:
     networks:
       - ticketing
 
+  tickets-db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: tickets_user
+      POSTGRES_PASSWORD: tickets_password
+      POSTGRES_DB: tickets_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - tickets-data:/var/lib/postgresql/data
+    depends_on:
+      - broker
+    networks:
+      - ticketing
+
+  orders-db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: orders_user
+      POSTGRES_PASSWORD: orders_password
+      POSTGRES_DB: orders_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - orders-data:/var/lib/postgresql/data
+    depends_on:
+      - broker
+    networks:
+      - ticketing
+
 volumes:
   broker-data:
   auth-data:
+  tickets-data:
+  orders-data:

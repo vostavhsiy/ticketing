@@ -64,7 +64,10 @@ export class AuthService {
     res.clearCookie(REFRESH_TOKEN_NAME);
   }
 
-  async refresh(req: Request, res: Response): Promise<string | null> {
+  async refresh(
+    req: Request,
+    res: Response,
+  ): Promise<{ accessToken: string | null }> {
     const refreshToken = req.cookies[REFRESH_TOKEN_NAME];
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token is missing');
@@ -79,7 +82,7 @@ export class AuthService {
       userId: payload.userId,
       email: payload.email,
     });
-    return accessToken;
+    return { accessToken };
   }
 
   setTokensToCookies(

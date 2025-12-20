@@ -29,7 +29,11 @@
           "watchDepsName": "watch-deps"
         }
       },
-      "exclude": ["libs/auth/*"]
+      "exclude": [
+        "libs/auth/*",
+        "apps/tickets-service/libs/events/*",
+        "libs/events/*"
+      ]
     },
     {
       "plugin": "@nx/webpack/plugin",
@@ -53,7 +57,11 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/auth-e2e/**/*"]
+      "exclude": [
+        "apps/auth-e2e/**/*",
+        "apps/tickets-service-e2e/**/*",
+        "apps/orders-service-e2e/**/*"
+      ]
     },
     {
       "plugin": "@nx/docker",
@@ -68,7 +76,11 @@
     },
     {
       "plugin": "@nx/js/typescript",
-      "include": ["libs/auth/*"],
+      "include": [
+        "libs/auth/*",
+        "apps/tickets-service/libs/events/*",
+        "libs/events/*"
+      ],
       "options": {
         "typecheck": {
           "targetName": "typecheck"

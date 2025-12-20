@@ -40,14 +40,22 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, documentFactory);
 
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: [process.env.BROKER_URL],
-      queue: 'ticketing',
-      noAck: false,
+  app.connectMicroservice<MicroserviceOptions>(
+    {
+      transport: Transport.RMQ,
+      options: {
+        urls: [process.env.BROKER_URL],
+        exchange: 'ticketing',
+        exchangeType: 'topic',
+        queue: 'auth-service',
+        routingKey: 'user.*',
+        queueOptions: {
+          durable: true,
+        },
+      },
     },
-  });
+    { inheritAppConfig: true },
+  );
 
   await app.startAllMicroservices();
 

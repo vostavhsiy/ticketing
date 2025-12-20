@@ -1,3 +1,4 @@
+import { ApiSchema } from '@nestjs/swagger';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+@ApiSchema()
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')

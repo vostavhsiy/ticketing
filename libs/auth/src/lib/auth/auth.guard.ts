@@ -3,10 +3,10 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { Jwt } from '../jwt';
-import { AuthRequest } from '../types/express';
-import { ACCESS_TOKEN_NAME } from '../constants';
+} from '@nestjs/common'
+import { Jwt } from '../jwt'
+import { AuthRequest } from '../types/express'
+import { ACCESS_TOKEN_NAME } from '../constants'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: AuthRequest): string | undefined {
-    const accessToken = request.cookies[ACCESS_TOKEN_NAME];
+    const accessToken = request?.cookies?.[ACCESS_TOKEN_NAME];
     return accessToken;
   }
 }
