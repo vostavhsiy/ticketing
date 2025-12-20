@@ -67,7 +67,11 @@ export class OrdersService {
     }
   }
 
-  async cancelOrder(id: string, userId: string): Promise<Order> {
+  async cancelOrder(
+    id: string,
+    userId: string,
+    nonpublish?: boolean,
+  ): Promise<Order> {
     const order = await this.orderRepository.findOne({ where: { id } });
     if (!order) {
       throw new BadRequestException('Order not found');
@@ -81,13 +85,15 @@ export class OrdersService {
 
     await this.orderRepository.save(order);
 
-    new OrderCancelledPublisher(this.client).publish({
-      id: order.id,
-      status: order.status,
-      userId: order.userId,
-      ticketId: order.ticket.id,
-      expiresAt: order.expiresAt,
-    });
+    if (!nonpublish) {
+      new OrderCancelledPublisher(this.client).publish({
+        id: order.id,
+        status: order.status,
+        userId: order.userId,
+        ticketId: order.ticket.id,
+        expiresAt: order.expiresAt,
+      });
+    }
     return order;
   }
 

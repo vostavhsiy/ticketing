@@ -103,7 +103,7 @@ export class TicketsController {
       return;
     }
 
-    ticket.orderId = undefined;
+    ticket.orderId = null;
 
     await this.ticketRepository.save(ticket);
 
@@ -129,7 +129,7 @@ export class TicketsController {
       return;
     }
 
-    ticket.orderId = undefined;
+    ticket.orderId = null;
 
     await this.ticketRepository.save(ticket);
 

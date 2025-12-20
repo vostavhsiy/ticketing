@@ -24,9 +24,10 @@ export class Ticket {
   userId!: string;
 
   @Column({
+    type: 'uuid',
     nullable: true,
   })
-  orderId?: string;
+  orderId?: string | null;
 
   @VersionColumn()
   version!: number;

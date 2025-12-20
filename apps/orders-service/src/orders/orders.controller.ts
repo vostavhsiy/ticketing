@@ -117,4 +117,19 @@ export class OrdersController {
 
     channel.ack(originalMsg);
   }
+
+  @EventPattern(EventPatterns.OrderCancelled)
+  async cancelledOrder(
+    @Payload() data: TicketUpdatedEvent['data'],
+    @Ctx() context: RmqContext,
+  ) {
+    this.logger.log('Received OrderCancelled event:', data);
+
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+
+    await this.ordersService.cancelOrder(data.id, data.userId, true);
+
+    channel.ack(originalMsg);
+  }
 }

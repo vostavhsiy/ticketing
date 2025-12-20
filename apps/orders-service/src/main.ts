@@ -48,7 +48,7 @@ async function bootstrap() {
         exchange: 'ticketing',
         exchangeType: 'topic',
         queue: 'orders-service',
-        routingKey: 'ticket.*',
+        routingKey: '#',
         queueOptions: { durable: true },
         noAck: false,
       },

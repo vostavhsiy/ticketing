@@ -26,6 +26,12 @@
     },
     {
       "path": "./apps/orders-service"
+    },
+    {
+      "path": "./apps/expiration-service-e2e"
+    },
+    {
+      "path": "./apps/expiration-service"
     }
   ]
 }
