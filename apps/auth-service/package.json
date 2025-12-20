@@ -1,7 +1,13 @@
 {
-  "name": "@ticketing/auth",
+  "name": "@ticketing/auth-service",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:generate": "npm run typeorm -- migration:generate src/database/migrations/init -d src/database/data-source.ts",
+    "migration:run": "npm run typeorm -- migration:run -d src/database/data-source.ts",
+    "dev": "nx run @ticketing/auth-service:serve --configuration=development --no-tui --watch"
+  },
   "nx": {
     "targets": {
       "build": {
@@ -63,15 +69,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@ticketing/auth:build",
+          "buildTarget": "@ticketing/auth-service:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@ticketing/auth:build:development"
+            "buildTarget": "@ticketing/auth-service:build:development"
           },
           "production": {
-            "buildTarget": "@ticketing/auth:build:production"
+            "buildTarget": "@ticketing/auth-service:build:production"
           }
         }
       },
@@ -87,16 +93,5 @@
         ]
       }
     }
-  },
-  "dependencies": {
-    "@nestjs/common": "^11.0.0",
-    "@nestjs/core": "^11.0.0",
-    "@nestjs/platform-express": "^11.0.0",
-    "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.0",
-    "tslib": "^2.3.0"
-  },
-  "devDependencies": {
-    "@nestjs/testing": "^11.0.0"
   }
 }

@@ -1,0 +1,37 @@
+networks:
+  ticketing:
+    driver: bridge
+
+services:
+  broker:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: on-failure
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - ticketing
+    volumes:
+      - broker-data:/var/lib/broker
+
+  auth-db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: auth_password
+      POSTGRES_DB: auth_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth-data:/var/lib/postgresql/data
+    depends_on:
+      - broker
+    networks:
+      - ticketing
+
+volumes:
+  broker-data:
+  auth-data:

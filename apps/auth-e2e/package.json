@@ -4,7 +4,7 @@
   "private": true,
   "nx": {
     "implicitDependencies": [
-      "@ticketing/auth"
+      "@ticketing/auth-service"
     ],
     "targets": {
       "e2e": {
@@ -17,8 +17,8 @@
           "passWithNoTests": true
         },
         "dependsOn": [
-          "@ticketing/auth:build",
-          "@ticketing/auth:serve"
+          "@ticketing/auth-service:build",
+          "@ticketing/auth-service:serve"
         ]
       }
     }
