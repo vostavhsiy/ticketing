@@ -6,7 +6,7 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "npm run typeorm -- migration:generate src/database/migrations/init -d src/database/data-source.ts",
     "migration:run": "npm run typeorm -- migration:run -d src/database/data-source.ts",
-    "dev": "nx run @ticketing/auth-service:serve --configuration=development --no-tui --watch"
+    "dev": "nx run @ticketing/auth-service:serve --configuration=development --no-tui"
   },
   "nx": {
     "targets": {
@@ -17,7 +17,7 @@
           "args": [
             "--node-env=production"
           ],
-          "cwd": "apps/auth"
+          "cwd": "apps/auth-service"
         },
         "configurations": {
           "development": {
@@ -34,8 +34,8 @@
         "cache": true,
         "executor": "@nx/js:prune-lockfile",
         "outputs": [
-          "{workspaceRoot}/apps/auth/dist/package.json",
-          "{workspaceRoot}/apps/auth/dist/package-lock.json"
+          "{workspaceRoot}/apps/auth-service/dist/package.json",
+          "{workspaceRoot}/apps/auth-service/dist/package-lock.json"
         ],
         "options": {
           "buildTarget": "build"
@@ -47,7 +47,7 @@
         ],
         "cache": true,
         "outputs": [
-          "{workspaceRoot}/apps/auth/dist/workspace_modules"
+          "{workspaceRoot}/apps/auth-service/dist/workspace_modules"
         ],
         "executor": "@nx/js:copy-workspace-modules",
         "options": {

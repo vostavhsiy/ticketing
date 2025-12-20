@@ -11,7 +11,7 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
-  ],
+, "src/lib/types/express.ts"  ],
   "references": [
     {
       "path": "./tsconfig.lib.json"
