@@ -61,7 +61,8 @@
         "apps/auth-e2e/**/*",
         "apps/tickets-service-e2e/**/*",
         "apps/orders-service-e2e/**/*",
-        "apps/expiration-service-e2e/**/*"
+        "apps/expiration-service-e2e/**/*",
+        "apps/api-gateway-e2e/**/*"
       ]
     },
     {

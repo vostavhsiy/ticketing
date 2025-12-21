@@ -32,6 +32,12 @@
     },
     {
       "path": "./apps/expiration-service"
+    },
+    {
+      "path": "./apps/api-gateway-e2e"
+    },
+    {
+      "path": "./apps/api-gateway"
     }
   ]
 }
