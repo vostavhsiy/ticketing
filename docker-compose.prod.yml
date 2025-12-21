@@ -1,0 +1,155 @@
+networks:
+  ticketing:
+    driver: bridge
+
+services:
+  broker:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: on-failure
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - ticketing
+    volumes:
+      - broker-data:/var/lib/broker
+
+  auth-db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: auth_password
+      POSTGRES_DB: auth_db
+    volumes:
+      - auth-data:/var/lib/postgresql/data
+    depends_on:
+      - broker
+    networks:
+      - ticketing
+
+  tickets-db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: tickets_user
+      POSTGRES_PASSWORD: tickets_password
+      POSTGRES_DB: tickets_db
+    volumes:
+      - tickets-data:/var/lib/postgresql/data
+    depends_on:
+      - broker
+    networks:
+      - ticketing
+
+  orders-db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: orders_user
+      POSTGRES_PASSWORD: orders_password
+      POSTGRES_DB: orders_db
+    volumes:
+      - orders-data:/var/lib/postgresql/data
+    depends_on:
+      - broker
+    networks:
+      - ticketing
+
+  auth-service:
+    build:
+      context: ./apps/auth-service
+      dockerfile: Dockerfile
+    env_file:
+      - ./apps/auth-service/.env
+    environment:
+      BROKER_URL: amqp://user:password@broker:5672
+      DB_HOST: auth-db
+      DB_PORT: 5432
+      DB_USER: auth_user
+      DB_PASS: auth_password
+      DB_NAME: auth_db
+    ports:
+      - "4000:4000"
+    depends_on:
+      - auth-db
+      - broker
+    networks:
+      - ticketing
+
+  tickets-service:
+    build:
+      context: ./apps/tickets-service
+      dockerfile: Dockerfile
+    env_file:
+      - ./apps/tickets-service/.env
+    environment:
+      BROKER_URL: amqp://user:password@broker:5672
+      DB_HOST: tickets-db
+      DB_PORT: 5432
+      DB_USER: tickets_user
+      DB_PASS: tickets_password
+      DB_NAME: tickets_db
+    ports:
+      - "4001:4001"
+    depends_on:
+      - tickets-db
+      - broker
+    networks:
+      - ticketing
+
+  orders-service:
+    build:
+      context: ./apps/orders-service
+      dockerfile: Dockerfile
+    env_file:
+      - ./apps/orders-service/.env
+    environment:
+      BROKER_URL: amqp://user:password@broker:5672
+      DB_HOST: orders-db
+      DB_PORT: 5432
+      DB_USER: orders_user
+      DB_PASS: orders_password
+      DB_NAME: orders_db
+    ports:
+      - "4002:4002"
+    depends_on:
+      - orders-db
+      - broker
+    networks:
+      - ticketing
+
+  expiration-service:
+    build:
+      context: ./apps/expiration-service
+      dockerfile: Dockerfile
+    environment:
+      BROKER_URL: amqp://user:password@broker:5672
+    depends_on:
+      - orders-service
+      - broker
+    networks:
+      - ticketing
+
+  api-gateway:
+    build:
+      context: ./apps/api-gateway
+      dockerfile: Dockerfile
+    environment:
+      AUTH_SERVICE_URL: http://auth-service:4000
+      TICKETS_SERVICE_URL: http://tickets-service:4001
+      ORDERS_SERVICE_URL: http://orders-service:4002
+    ports:
+      - "5000:5000"
+    depends_on:
+      - auth-service
+      - tickets-service
+      - orders-service
+    networks:
+      - ticketing
+
+volumes:
+  broker-data:
+  auth-data:
+  tickets-data:
+  orders-data:

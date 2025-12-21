@@ -73,5 +73,19 @@
   "workspaces": [
     "apps/*",
     "libs/*"
-  ]
+  ],
+  "nx": {
+    "targets": {
+      "prod": {
+        "executor": "nx:run-commands",
+        "options": {
+          "commands": [
+            "nx run-many -t build",
+            "docker compose -f docker-compose.prod.yml up --build -d"
+          ],
+          "parallel": false
+        }
+      }
+    }
+  }
 }

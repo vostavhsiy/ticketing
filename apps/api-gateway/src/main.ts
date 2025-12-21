@@ -22,6 +22,8 @@ async function bootstrap() {
   const server = express();
 
   const logger = new Logger('API-Gateway');
+  //@ts-ignore
+  logger.info = logger.log;
 
   server.get('/health', (req, res) => {
     res.json({ status: 'OK', service: 'gateway' });
@@ -30,7 +32,7 @@ async function bootstrap() {
   server.use(
     '/auth',
     createProxyMiddleware({
-      target: 'http://localhost:4000',
+      target: process.env.AUTH_SERVICE_URL,
       changeOrigin: true,
       pathRewrite: {
         '^/auth': '/',
@@ -53,7 +55,7 @@ async function bootstrap() {
   server.use(
     '/tickets',
     createProxyMiddleware({
-      target: 'http://localhost:4001',
+      target: process.env.TICKETS_SERVICE_URL,
       changeOrigin: true,
       pathRewrite: {
         '^/tickets': '/',
@@ -76,7 +78,7 @@ async function bootstrap() {
   server.use(
     '/orders',
     createProxyMiddleware({
-      target: 'http://localhost:4002',
+      target: process.env.ORDERS_SERVICE_URL,
       changeOrigin: true,
       pathRewrite: {
         '^/orders': '/',
