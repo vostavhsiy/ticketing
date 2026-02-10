@@ -24,7 +24,7 @@ npm run dev
 # Down docker containers with services databases and rabbitmq
 npm run setup:dev:down
 
-# Start production build (builds serices and runs all containers)
+# Start production build (builds services and runs all containers)
 npm run prod
 
 ```
